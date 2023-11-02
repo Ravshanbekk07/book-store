@@ -7,6 +7,8 @@ class Book(models.Model):
     price=models.FloatField(max_length=10)
     description=models.CharField(max_length=250)
     picture =models.ImageField(upload_to='uploads/')
+    e_version=models.FileField(upload_to='documents/', max_length=150)
+    created_at=models.DateTimeField( auto_now_add=True)
 
     def __str__(self) -> str:
         return self.title
