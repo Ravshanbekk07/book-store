@@ -7,34 +7,34 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.authentication import BasicAuthentication,TokenAuthentication
 from django.shortcuts import get_object_or_404
 from .serializers import (BookSerializer,CategorySerializer,CustomerSerializer,
-                          OrderSerializer,CategoryBookSerializer,AuthorSerializer,
-                          UserRegistrationSerializer)
+                          OrderSerializer,CategoryBookSerializer,AuthorSerializer,)
+                          #UserRegistrationSerializer)
 
 
-class UserRegister(APIView):
+# class UserRegister(APIView):
    
 
-    def post(self,request):
-        serializer=UserRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            user=serializer.save() 
-            token=Token.objects.get_or_create(user=user)
-            return Response({'token':token.key,'message':'user registered successfully'} ,status=status.HTTP_201_CREATED) 
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-class UserLogin(APIView):
+#     def post(self,request):
+#         serializer=UserRegistrationSerializer(data=request.data)
+#         if serializer.is_valid():
+#             user=serializer.save() 
+#             token=Token.objects.get_or_create(user=user)
+#             return Response({'token':token.key,'message':'user registered successfully'} ,status=status.HTTP_201_CREATED) 
+#         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+# class UserLogin(APIView):
     
     
-    def post(self,request):
-        token, created = Token.objects.get_or_create(user=request.user)
-        return Response({'token': token.key, 'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)  
+    # def post(self,request):
+    #     token, created = Token.objects.get_or_create(user=request.user)
+    #     return Response({'token': token.key, 'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)  
 
 class BookList(APIView):
-    authentication_classes=[BasicAuthentication]
-    permission_classes=[IsAuthenticated,]
+    # authentication_classes=[TokenAuthentication]
+    # permission_classes=[IsAuthenticated,]
 
     def get(self,request):
         book=Book.objects.all()
@@ -55,8 +55,8 @@ class BookList(APIView):
             return Response(serializer.errors)
         
 class BookDetail(APIView):
-    authentication_classes=[BasicAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes=[TokenAuthentication]
+    # permission_classes=[IsAuthenticated]
 
     def get(self,request,pk:int):
         user=request.user
@@ -72,9 +72,8 @@ class BookDetail(APIView):
         user=request.user
         book=get_object_or_404(Book,id=pk)    
         serializer=BookSerializer(instance=book,data=request.data)
-        if not user:
-                return Response({'error':'unauthorized'},status =401)
-        elif not user.is_superuser:
+        
+        if not user.is_superuser:
                 return Response({'error':'forbidden'},status=403)
         elif serializer.is_valid():
             serializer.save()
@@ -103,9 +102,9 @@ class CategoryList(APIView):
         user=request.user
         data=request.data
         serializer=CategorySerializer(data=data)
-        if not user:
-                return Response({'error':'Unauthorized'},status =401)
-        elif not user.is_superuser:
+        # if not user:
+        #         return Response({'error':'Unauthorized'},status =401)
+        if not user.is_superuser:
                 return Response({'error':'Forbidden'},status=403)
         elif serializer.is_valid():
             serializer.save()
@@ -151,8 +150,8 @@ class CategoryDetail(APIView):
             return Response({"status":'deleted'})  
 
 class CustomerList(APIView):
-    authentication_classes=[BasicAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes=[BasicAuthentication]
+    # permission_classes=[IsAuthenticated]
 
     def get(self,request):
         user=request.user
@@ -165,15 +164,15 @@ class CustomerList(APIView):
             serializer=CustomerSerializer(customer,many=True)
             return Response(serializer.data)
 class CustomerDetail(APIView):
-    authentication_classes=[BasicAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes=[BasicAuthentication]
+    # permission_classes=[IsAuthenticated]
 
     def get(self,request,pk:int):
         user=request.user
         
-        if not user:
-                return Response({'error':'unauthorized'},status =401)
-        elif not user.is_superuser:
+        # if not user:
+        #         return Response({'error':'unauthorized'},status =401)
+        if not user.is_superuser:
                 return Response({'error':'Forbidden'},status=403)
         else:
                 customer=get_object_or_404(Customer,id=pk)
@@ -182,8 +181,8 @@ class CustomerDetail(APIView):
     
 class OrderList(APIView):
 
-    authentication_classes=[BasicAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes=[TokenAuthentication]
+    # permission_classes=[IsAuthenticated]
 
     def get(self,request):
         user=request.user
@@ -205,8 +204,8 @@ class OrderList(APIView):
         else:
             return Response(serializer.errors)
 class OrderDetail(APIView):
-    authentication_classes=[BasicAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes=[TokenAuthentication]
+    # permission_classes=[IsAuthenticated]
 
     def get(self,request,pk:int):
         user=request.user
@@ -237,69 +236,10 @@ class OrderDetail(APIView):
             order.delete()
             return Response({"status":'deleted'})  
 
-# class BookOrderList(APIView):
-#     authentication_classes=[BasicAuthentication]
-#     permission_classes=[IsAuthenticated]
-    
-#     def get(self,request):
-#         user=request.user
-#         if not user.is_superuser:
-#             return Response({'error':'Forbidden'},status=403)
-#         book_order=Book_order.objects.all()
-#         serializer=BookOrderSerializer(book_order,many=True)
-#         return Response(serializer.data)
-#     def post(self,request):
-#         data =request.data
-#         user=request.user
-#         serializer = BookOrderSerializer(data=data)
-#         if not user:
-#             return Response({'error':'Unauthorized'},status =401)
-#         elif serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         else:
-#             return Response(serializer.errors)
 
-# class BookOrderDetail(APIView):
-#     authentication_classes=[BasicAuthentication]
-#     permission_classes=[IsAuthenticated]
-
-#     def get(self,request,pk:int):
-#         user=request.user
-        
-#         if not user.is_superuser:
-#                 return Response({'error':'Forbidden'},status=403)
-           
-#         else:
-#                 book_order=get_object_or_404(Book_order,id=pk)
-#                 serializer=BookOrderSerializer(book_order)
-#                 return Response(serializer.data)
-                
-#     def put(self,request,pk:int):
-#         user=request.user
-#         book_order=get_object_or_404(Book_order,id=pk)    
-#         serializer=BookOrderSerializer(instance=book_order,data=request.data)
-#         if not user:
-#                 return Response({'error':'unauthorized'},status =401)
-#         elif not user.is_superuser:
-#                 return Response({'error':'forbidden'},status=403)
-#         elif serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors)
-    # def delete(self,request,pk:int):
-    #     user=request.user
-    #     book_order = get_object_or_404(Book_order,id=pk)
-    #     if not user:
-    #             return Response({'error':'unauthorized'},status =401)
-    #     elif not user.is_superuser:
-    #             return Response({'error':'forbidden'},status=403)
-    #     else:
-    #         book_order.delete()
-    #         return Response({"status":'deleted'})  
 class CategoryBookList(APIView):
-    authentication_classes=[BasicAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes=[BasicAuthentication]
+    # permission_classes=[IsAuthenticated]
 
     def get(self,request):
         category_booklist=Category_book.objects.all()
@@ -321,8 +261,8 @@ class CategoryBookList(APIView):
             return Response(serializer.errors)
                 
 class CategoryBookDetail(APIView):
-    authentication_classes=[BasicAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes=[BasicAuthentication]
+    # permission_classes=[IsAuthenticated]
     def get(self,request,pk:int):
         category_booklist=get_object_or_404(Category_book,id=pk)
         serializer=CategoryBookSerializer(category_booklist)
@@ -353,8 +293,8 @@ class CategoryBookDetail(APIView):
 
 
 class AuthorList(APIView):
-    authentication_classes=[BasicAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes=[BasicAuthentication]
+    # permission_classes=[IsAuthenticated]
 
     def get(self,request):
         
@@ -376,8 +316,8 @@ class AuthorList(APIView):
             return Response(serializer.errors)
         
 class AuthorDetail(APIView):
-    authentication_classes=[BasicAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes=[BasicAuthentication]
+    # permission_classes=[IsAuthenticated]
 
     def get(self,request,pk:int):
        

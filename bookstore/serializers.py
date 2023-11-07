@@ -38,33 +38,33 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model=Author
         fields="__all__"
-class UserRegistrationSerializer(serializers.ModelSerializer):
+# class UserRegistrationSerializer(serializers.ModelSerializer):
     
-    username=serializers.CharField(max_length=200)
-    email=serializers.EmailField()
-    password=serializers.CharField(write_only=True)
+#     username=serializers.CharField(max_length=200)
+#     email=serializers.EmailField()
+#     password=serializers.CharField(write_only=True)
 
-    def validate_username(self,value):
-        if User.objects.filter(username=value).exists():
-            raise serializers.ValidationError('This username is already taken')
-        return value
-    def validate_email(self,value):
-        if User.objects.filter(email=value).exists():
-             raise serializers.ValidationError('This email is already taken')
-        return value
-    def validate_password(self,value):
+#     def validate_username(self,value):
+#         if User.objects.filter(username=value).exists():
+#             raise serializers.ValidationError('This username is already taken')
+#         return value
+#     def validate_email(self,value):
+#         if User.objects.filter(email=value).exists():
+#              raise serializers.ValidationError('This email is already taken')
+#         return value
+#     def validate_password(self,value):
         
-        validate_password(value)
-        return value  
+#         validate_password(value)
+#         return value  
     
-    def create(self,validated_data):
-        user=User.objects.create(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password']
-        )
+#     def create(self,validated_data):
+#         user=User.objects.create(
+#             username=validated_data['username'],
+#             email=validated_data['email'],
+#             password=validated_data['password']
+#         )
 
-        return user
-    class Meta:
-        model=User
-        fields="__all__"
+#         return user
+#     class Meta:
+#         model=User
+#         fields="__all__"
