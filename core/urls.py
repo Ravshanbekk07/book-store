@@ -22,9 +22,9 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view (
     openapi.Info(
-        title='quiz list api',
+        title='bookstore  api',
         default_version='v1',
-        description='quiz demo project',
+        description='bookstore demo project',
         terms_of_service='demo.com',
         contact=openapi.Contact(email='ramazonof07@gmail.com'),
         license=openapi.License(name='demo license')
@@ -35,6 +35,7 @@ schema_view = get_schema_view (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('book/', include("bookstore.urls")),
+    # path('api-auth/', include("rest_framework.urls")),
 
     path ('swagger/',schema_view.with_ui(
         'swagger',cache_timeout=0),name='swagger-swagger-ui'),
