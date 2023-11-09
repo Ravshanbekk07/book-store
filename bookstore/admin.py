@@ -10,7 +10,7 @@ from .models import Book,Category,Category_book,Order,Customer,Authors,Likes
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display=['title','author','price','active']
+    list_display=['title','price','active']
     list_filter=['active','created_at','updated_at']
     date_hierarchy='created_at'
     search_fields=['title','author']
@@ -60,7 +60,7 @@ class CategoryBookAdmin(admin.ModelAdmin):
      
 @admin.register(Authors)
 class AuthorsAdmin(admin.ModelAdmin):
-    list_display=['name','books']
+    list_display=['firstname','lastname']
 
 @admin.register(Likes)
 class LikesAdmin(admin.ModelAdmin):

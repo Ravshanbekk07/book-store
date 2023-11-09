@@ -1,11 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Authors(models.Model):
+    
+    firstname = models.CharField(max_length=100)
+    lastname=models.CharField(max_length=150)
+    description=models.CharField(max_length=400,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name    
 
     
 class Book(models.Model):
     title=models.CharField(max_length=255)
-    author = models.CharField(max_length=200)
+    author = models.ManyToManyField(Authors,related_name='author')
     price=models.FloatField(max_length=10)
     description=models.CharField(max_length=400,blank=True)
     picture =models.ImageField(upload_to='uploads/')
@@ -19,14 +29,14 @@ class Book(models.Model):
     def __str__(self) -> str:
         return self.title 
 
-class Author(models.Model):
-    
-    name = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+# class Authors(models.Model):
+#     books=models.ForeignKey(Book, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=100)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.name    
+#     def __str__(self):
+#         return self.name    
 
 class Category(models.Model):
     name=models.CharField(max_length=250)
