@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Book,Category,Category_book,Order,Customer,Author
+from .models import Book,Category,Category_book,Order,Customer,Authors,Likes
 
 # admin.site.register(Book)
 # admin.site.register(Category)
@@ -58,6 +58,10 @@ class CategoryBookAdmin(admin.ModelAdmin):
     list_display=['id','book_id','category_id']
     search_fields=['book_id__title','category_id__name']
      
-@admin.register(Author)
+@admin.register(Authors)
 class AuthorsAdmin(admin.ModelAdmin):
-    list_display=['name']
+    list_display=['name','books']
+
+@admin.register(Likes)
+class LikesAdmin(admin.ModelAdmin):
+    list_display=['book_id',"user_id"]

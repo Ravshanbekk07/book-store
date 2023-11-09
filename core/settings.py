@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     #installed
+    
+    'drf_yasg',
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',
@@ -47,7 +49,7 @@ INSTALLED_APPS = [
     'allauth.account',
     #locals
     'bookstore.apps.BookstoreConfig',
-    'drf_yasg',
+    
 
 
 
@@ -72,7 +74,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / 'templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
