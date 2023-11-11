@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 
 class Authors(models.Model):
     
-    firstname = models.CharField(max_length=100)
-    lastname=models.CharField(max_length=150)
+    name = models.CharField(max_length=100)
+   
     description=models.CharField(max_length=400,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -12,10 +12,18 @@ class Authors(models.Model):
     def __str__(self):
         return self.name    
 
+
+class Category(models.Model):
+    name=models.CharField(max_length=250)
+    description=models.CharField(max_length=250)
+
+    def __str__(self) -> str:
+        return self.name
     
 class Book(models.Model):
     title=models.CharField(max_length=255)
-    author = models.ManyToManyField(Authors,related_name='author')
+    author = models.ManyToManyField(Authors,related_name='books')
+    category = models.ManyToManyField(Category,related_name='categorys')
     price=models.FloatField(max_length=10)
     description=models.CharField(max_length=400,blank=True)
     picture =models.ImageField(upload_to='uploads/')
@@ -29,22 +37,9 @@ class Book(models.Model):
     def __str__(self) -> str:
         return self.title 
 
-# class Authors(models.Model):
-#     books=models.ForeignKey(Book, on_delete=models.CASCADE)
-#     name = models.CharField(max_length=100)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
+ 
 
-#     def __str__(self):
-#         return self.name    
 
-class Category(models.Model):
-    name=models.CharField(max_length=250)
-    description=models.CharField(max_length=250)
-
-    def __str__(self) -> str:
-        return self.name
-    
 class Customer(models.Model):
     name=models.CharField(max_length=50)
     address=models.CharField(max_length=250)
@@ -71,9 +66,7 @@ class Order(models.Model):
         return self.status
 
 
-class Category_book(models.Model):
-    book_id=models.ForeignKey(Book, on_delete=models.CASCADE)   
-    category_id=models.ForeignKey(Category,on_delete=models.CASCADE) 
+
     
 class Likes(models.Model):
     book_id=models.ForeignKey(Book, on_delete=models.CASCADE)  
