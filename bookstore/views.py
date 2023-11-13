@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from .models import (
     Book,Category,Customer,Order,Authors,Likes
 )
@@ -24,9 +23,7 @@ class LastBooks(APIView):
        return Response(serializer.data)
    
 class BookList(APIView):
-    # authentication_classes=[TokenAuthentication]
-    # permission_classes=[IsAuthenticated,]
-
+   
     def get(self,request):
         book=Book.objects.all()
         serializer=BookSerializer(book,many=True)
@@ -46,15 +43,9 @@ class BookList(APIView):
             return Response(serializer.errors)
         
 class BookDetail(APIView):
-    # authentication_classes=[TokenAuthentication]
-    # permission_classes=[IsAuthenticated]
 
     def get(self,request,pk:int):
-        user=request.user
         
-        # if not user:
-        #         return Response({'error':'unauthorized'},status =401)
-        # else:
         book=get_object_or_404(Book,id=pk)
         serializer=BookSerializer(book)
         return Response(serializer.data)
@@ -226,59 +217,6 @@ class OrderDetail(APIView):
         else:
             order.delete()
             return Response({"status":'deleted'})  
-
-
-# class CategoryBookList(APIView):
-#     # authentication_classes=[BasicAuthentication]
-#     # permission_classes=[IsAuthenticated]
-
-#     def get(self,request):
-#         category_booklist=Category_book.objects.all()
-#         serializer=CategoryBookSerializer(category_booklist,many=True)
-#         return Response(serializer.data)
-#     def post(self,request):
-#         data =request.data
-#         user=request.user
-#         serializer = CategoryBookSerializer(data=data)
-       
-#         if not user.is_superuser:
-#                 return Response({'error':'Forbidden'},status=403)
-           
-#         elif serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         else:
-#             return Response(serializer.errors)
-                
-# class CategoryBookDetail(APIView):
-    # authentication_classes=[BasicAuthentication]
-    # permission_classes=[IsAuthenticated]
-    # def get(self,request,pk:int):
-    #     category_booklist=get_object_or_404(Category_book,id=pk)
-    #     serializer=CategoryBookSerializer(category_booklist)
-    #     return Response(serializer.data)
-        
-    # def put(self,request,pk:int):
-    #     user=request.user
-    #     category_booklist=get_object_or_404(Category_book,id=pk)    
-    #     serializer=CategoryBookSerializer(instance=category_booklist,data=request.data)
-        
-    #     if not user.is_superuser:
-    #             return Response({'error':'forbidden'},status=403)
-    #     elif serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
-    #     return Response(serializer.errors)
-    # def delete(self,request,pk:int):
-        user=request.user
-        category_booklist = get_object_or_404(Category_book,id=pk)
-        
-        if not user.is_superuser:
-                return Response({'error':'forbidden'},status=403)
-        else:
-            category_booklist.delete()
-            return Response({"status":'deleted'})
-
 
 class AuthorList(APIView):
     # authentication_classes=[BasicAuthentication]

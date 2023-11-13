@@ -38,8 +38,6 @@ class Book(models.Model):
         return self.title 
 
  
-
-
 class Customer(models.Model):
     name=models.CharField(max_length=50)
     address=models.CharField(max_length=250)
@@ -66,8 +64,6 @@ class Order(models.Model):
         return self.status
 
 
-
-    
 class Likes(models.Model):
     book_id=models.ForeignKey(Book, on_delete=models.CASCADE)  
     user_id=models.ForeignKey(User,on_delete=models.CASCADE)
