@@ -23,7 +23,7 @@ class Category(models.Model):
 class Book(models.Model):
     title=models.CharField(max_length=255)
     author = models.ManyToManyField(Authors,related_name='books')
-    category = models.ManyToManyField(Category,related_name='categorys')
+    category = models.ManyToManyField(Category,related_name='categories')
     price=models.FloatField(max_length=10)
     description=models.CharField(max_length=400,blank=True)
     picture =models.ImageField(upload_to='uploads/')
@@ -52,7 +52,8 @@ class Order(models.Model):
         
         ('Done','Done'), 
         ('New', 'New'),
-        ('In Progress','In Progress')
+        ('In Progress','In Progress'),
+        ('cancelled','cancelled')
        
     )
     order_date=models.DateField(auto_now=True)

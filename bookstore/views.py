@@ -284,7 +284,7 @@ class mainAuth(APIView):
 class CategoryBookDetail(APIView):
      def get(self,request,pk:int):
         category = Category.objects.get(id=pk)
-        books = category.categorys.all()
+        books = category.categories.all()
         serializer=BookSerializer(books,many=True)
         return Response(serializer.data)
                   
