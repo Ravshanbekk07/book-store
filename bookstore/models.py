@@ -5,7 +5,7 @@ class Authors(models.Model):
     
     name = models.CharField(max_length=100)
    
-    description=models.CharField(max_length=400,blank=True)
+    description=models.CharField(max_length=400,blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -15,7 +15,7 @@ class Authors(models.Model):
 
 class Category(models.Model):
     name=models.CharField(max_length=250)
-    description=models.CharField(max_length=250)
+    description=models.CharField(max_length=250,null=True,blank=True)
 
     def __str__(self) -> str:
         return self.name
@@ -24,10 +24,10 @@ class Book(models.Model):
     title=models.CharField(max_length=255)
     author = models.ManyToManyField(Authors,related_name='books')
     category = models.ManyToManyField(Category,related_name='categories')
-    price=models.FloatField(max_length=10)
-    description=models.CharField(max_length=400,blank=True)
-    picture =models.ImageField(upload_to='uploads/')
-    e_version=models.FileField(upload_to='documents/', max_length=150,blank=True)
+    price=models.FloatField(max_length=10,null=True,blank=True)
+    description=models.CharField(max_length=400,blank=True,null=True)
+    picture =models.ImageField(upload_to='uploads/',null=True,blank=True)
+    e_version=models.FileField(upload_to='documents/', max_length=150,blank=True,null=True)
    
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateField(auto_now=True)
