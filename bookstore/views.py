@@ -1,7 +1,7 @@
 from .models import (
     Book,Category,Customer,Order,Authors,Likes
 )
-from rest_framework import status
+from rest_framework import status,generics
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
@@ -291,39 +291,18 @@ class CategoryBookDetail(APIView):
 
 
 
-class LikeList(APIView):
+class LikeList(generics.ListCreateAPIView):
+    permission_classes=[IsAuthenticated]
+    def get_queryset(self,request):
+        user=request.user
+        return Likes.objects.filter(user=user)
+    def perform_create(self,serializer,request):
+        user=request.user
+        serializer.save(user=user)
+class LikeDetail(generics.RetrieveDestroyAPIView):
+     permission_classes=[IsAuthenticated]
+     queryset=Likes.objects.all()
+     serializer_class=LIkeSerializer
+     
 
-    # authentication_classes=[TokenAuthentication]
-    # permission_classes=[IsAuthenticated]
-
-    def get(self,request):
-        user=request.user
-        if not user:
-            return Response({'error':'Unauthorized'},status =401)
-        
-        else:
-            likes=Likes.objects.all()
-            serializer=LIkeSerializer(likes,many=True)
-            return Response(serializer.data)
-    def post(self,request):
-        data =request.data
-        user=request.user
-        serializer = LIkeSerializer(data=data)
-        if not user:
-            return Response({'error':'Unauthorized'},status =401)
-        
-        elif serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-class LikeDetail(APIView):
-     def delete(self,request,pk:int):
-        user=request.user
-        like = get_object_or_404(Likes,id=pk)
-        if not user:
-            return Response({'error':'Unauthorized'},status =401)
-       
-        else:
-            like.delete()
-            return Response({"status":'deleted'})
+   
