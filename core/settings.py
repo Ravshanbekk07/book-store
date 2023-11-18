@@ -44,9 +44,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',
-    'dj_rest_auth.registration',
-    'allauth',
-    'allauth.account',
+   
+    # 'dj_rest_auth.registration',
+    # 'allauth',
+    # 'allauth.account',
     #locals
     'bookstore.apps.BookstoreConfig',
     
@@ -121,9 +122,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK={
     'DEFAULT_AUTHENTICATION_CLASSES':[
-        # 'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+     
         
     ],
     'DEFAULT_PERMISSION_CLASSES':[
