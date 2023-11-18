@@ -38,13 +38,7 @@ class Book(models.Model):
         return self.title 
 
  
-class Customer(models.Model):
-    name=models.CharField(max_length=50)
-    address=models.CharField(max_length=250)
-    email=models.CharField(max_length=150)
 
-    def __str__(self) -> str:
-        return self.name
     
 class Order(models.Model):
    
@@ -58,7 +52,7 @@ class Order(models.Model):
     )
     order_date=models.DateField(auto_now=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    customer_id=models.ForeignKey(Customer,on_delete=models.CASCADE)
+    customer_id=models.ForeignKey(User,on_delete=models.CASCADE)
     status = models.CharField(max_length = 100, choices = STATUS, default="New")
 
     def __str__(self) -> str:

@@ -1,5 +1,5 @@
 from .models import (
-    Book,Category,Customer,Order,Authors,Likes
+    Book,Category,Order,Authors,Likes
 )
 from rest_framework import serializers
 from django.contrib.auth.models import User
@@ -36,19 +36,33 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model=Category
         fields="__all__"
+    def validate(self, data):
+        
+        name = data.get("name",None)
+        if  name.isnumeric():
+            raise ValidationError(
+                {
+                    'status':False,
+                    'message':'Kategoriya harflardan tashkil topishi kerak'
+                }
+            )
+        if Category.objects.filter(name=name).exists():
+            raise ValidationError(
+                {
+                    'status':False,
+                    'message':'bu kategoriya bazamizda mavjud'
+                }
+            )
 
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=Customer
-        fields="__all__"
+        
+        return data
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model=Order
         fields="__all__"
-
-
-
+    
+    
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -79,3 +93,19 @@ class LIkeSerializer(serializers.ModelSerializer):
     class Meta:
         model=Likes
         fields="__all__"
+
+
+    def validate(self, data):
+        
+        book_id = data.get("book_id",None)
+        user=data.get('user',None)
+        if Likes.objects.filter(book_id=book_id,user=user).exists():
+             raise ValidationError(
+                {
+                    'status':False,
+                    'message':'bu kitob sevimlilarga avvaldan qo\'shilgan'
+                }
+            )
+
+        
+        return data

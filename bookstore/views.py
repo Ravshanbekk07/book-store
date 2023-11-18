@@ -1,5 +1,5 @@
 from .models import (
-    Book,Category,Customer,Order,Authors,Likes
+    Book,Category,Order,Authors,Likes
 )
 from rest_framework import status,generics
 from django.contrib.auth.models import User
@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.authentication import BasicAuthentication,TokenAuthentication
 from django.shortcuts import get_object_or_404
-from .serializers import (BookSerializer,CategorySerializer,CustomerSerializer,
+from .serializers import (BookSerializer,CategorySerializer,
                           OrderSerializer,AuthorSerializer,LIkeSerializer)
                           
 
@@ -129,47 +129,25 @@ class CategoryDetail(APIView):
             category.delete()
             return Response({"status":'deleted'})  
 
-class CustomerList(APIView):
-    # authentication_classes=[BasicAuthentication]
-    # permission_classes=[IsAuthenticated]
 
-    def get(self,request):
-        user=request.user
-        
-       
-        if not user.is_superuser:
-                return Response({'error':'Forbidden'},status=403)
-        else:
-            customer=Customer.objects.all()
-            serializer=CustomerSerializer(customer,many=True)
-            return Response(serializer.data)
-class CustomerDetail(APIView):
-    # authentication_classes=[BasicAuthentication]
-    # permission_classes=[IsAuthenticated]
-
-    def get(self,request,pk:int):
-        user=request.user
-        
-        # if not user:
-        #         return Response({'error':'unauthorized'},status =401)
-        if not user.is_superuser:
-                return Response({'error':'Forbidden'},status=403)
-        else:
-                customer=get_object_or_404(Customer,id=pk)
-                serializer=CustomerSerializer(customer)
-                return Response(serializer.data)
     
 class OrderList(APIView):
 
-    # authentication_classes=[TokenAuthentication]
-    # permission_classes=[IsAuthenticated]
-
+    authentication_classes=[BasicAuthentication]
+    permission_classes=[IsAuthenticated]
+     
     def get(self,request):
         user=request.user
-        if not user.is_superuser:
-                return Response({'error':'Forbidden'},status=403)
-        else:
+        if not user:
+            return Response({'error':'unauthorized'},status =401)
+            
+        elif user.is_superuser:
+            
             order=Order.objects.all()
+            serializer=OrderSerializer(order,many=True)
+            return Response(serializer.data)
+        else:
+            order=Order.objects.filter(customer_id=user)
             serializer=OrderSerializer(order,many=True)
             return Response(serializer.data)
     def post(self,request):
@@ -184,8 +162,8 @@ class OrderList(APIView):
         else:
             return Response(serializer.errors)
 class OrderDetail(APIView):
-    # authentication_classes=[TokenAuthentication]
-    # permission_classes=[IsAuthenticated]
+    authentication_classes=[BasicAuthentication]
+    permission_classes=[IsAuthenticated]
 
     def get(self,request,pk:int):
         user=request.user
@@ -196,17 +174,7 @@ class OrderDetail(APIView):
                 serializer=OrderSerializer(order)
                 return Response(serializer.data)
         
-    def put(self,request,pk:int):
-        user=request.user
-        order=get_object_or_404(Order,id=pk)    
-        serializer=OrderSerializer(instance=order,data=request.data)
-        if not user:
-            return Response({'error':'Unauthorized'},status =401)
-        elif serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
+   
     def delete(self,request,pk:int):
         user=request.user
         order = get_object_or_404(Order,id=pk)
@@ -289,11 +257,9 @@ class CategoryBookDetail(APIView):
         return Response(serializer.data)
                   
 
-
-
 class LikeList(generics.ListCreateAPIView):
   
-
+    authentication_classes=[BasicAuthentication]
     serializer_class = LIkeSerializer
     permission_classes = [IsAuthenticated]
 
@@ -307,9 +273,10 @@ class LikeDetail(generics.DestroyAPIView):
     queryset = Likes.objects.all()
     serializer_class = LIkeSerializer
     permission_classes = [IsAuthenticated]
+    authentication_classes=[BasicAuthentication]
 
     def get_queryset(self):
         return Likes.objects.filter(user=self.request.user)
      
 
-   
+

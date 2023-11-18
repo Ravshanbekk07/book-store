@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (BookList,BookDetail,CategoryList,CategoryDetail,
-                    CustomerList,CustomerDetail,OrderList,OrderDetail,
+                    OrderList,OrderDetail,
                    AuthorList,AuthorDetail,
                    LastBooks,LikeList,LikeDetail,mainAuth,CategoryBookDetail)
                    
@@ -13,8 +13,7 @@ urlpatterns=[
     path('category/all/',CategoryList.as_view()),
     path('category/<int:pk>/',CategoryDetail.as_view()),
 
-    path('customer/all/',CustomerList.as_view()),
-    path('customer/<int:pk>/',CustomerDetail.as_view()),
+    
 
     path('order/all/',OrderList.as_view()),
     path('order/<int:pk>/',OrderDetail.as_view()),
