@@ -255,8 +255,8 @@ class AuthorDetail(APIView):
     def put(self,request,pk:int):
         user=request.user
         author=get_object_or_404(Authors,id=pk)    
-        serializer=AuthorSerializer(instance=author,data=request.data)
-        
+        serializer=AuthorSerializer(instance=author,data=request.data,partial=True)
+        #partial=true faqatgina bazilarini update qilish uchun ishlatiladi agar modelda null=true yoki blank=true bolmasa
         if not user.is_superuser:
             return Response({'error':'Forbidden'},status=403)
         elif serializer.is_valid():
@@ -292,17 +292,24 @@ class CategoryBookDetail(APIView):
 
 
 class LikeList(generics.ListCreateAPIView):
-    permission_classes=[IsAuthenticated]
-    def get_queryset(self,request):
-        user=request.user
-        return Likes.objects.filter(user=user)
-    def perform_create(self,serializer,request):
-        user=request.user
-        serializer.save(user=user)
-class LikeDetail(generics.RetrieveDestroyAPIView):
-     permission_classes=[IsAuthenticated]
-     queryset=Likes.objects.all()
-     serializer_class=LIkeSerializer
+  
+
+    serializer_class = LIkeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Likes.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class LikeDetail(generics.DestroyAPIView):
+    queryset = Likes.objects.all()
+    serializer_class = LIkeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Likes.objects.filter(user=self.request.user)
      
 
    

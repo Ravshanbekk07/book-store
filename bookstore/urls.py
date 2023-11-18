@@ -27,7 +27,7 @@ urlpatterns=[
     path('lastbooks/',LastBooks.as_view()),
    
     path('favorites/',LikeList.as_view()),
-    path('favorites<int:pk>/',LikeDetail.as_view()),
+    path('favorites/<int:pk>/',LikeDetail.as_view()),
 
     path('mainauth/<int:pk>/',mainAuth.as_view()),
     path('categorybook/<int:pk>/',CategoryBookDetail.as_view())

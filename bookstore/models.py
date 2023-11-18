@@ -3,9 +3,9 @@ from django.contrib.auth.models import User
 
 class Authors(models.Model):
     
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,unique=True)
    
-    description=models.CharField(max_length=400,blank=True,null=True)
+    description=models.CharField(max_length=400,blank=True,null=True) 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -67,5 +67,5 @@ class Order(models.Model):
 
 class Likes(models.Model):
     book_id=models.ForeignKey(Book, on_delete=models.CASCADE)  
-    user_id=models.ForeignKey(User,on_delete=models.CASCADE)
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
     time=models.DateField(auto_now=True)
