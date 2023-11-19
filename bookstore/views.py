@@ -29,6 +29,7 @@ class BookList(APIView):
         serializer=BookSerializer(book,many=True)
         return Response(serializer.data)
     def post(self,request):
+       
         data =request.data
         user=request.user
         serializer = BookSerializer(data=data)
