@@ -134,7 +134,8 @@ class CategoryDetail(APIView):
     
 class OrderList(APIView):
 
-    authentication_classes=[BasicAuthentication]
+    # authentication_classes=[BasicAuthentication]
+    authentication_classes=[TokenAuthentication]
     permission_classes=[IsAuthenticated]
      
     def get(self,request):

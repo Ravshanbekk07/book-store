@@ -24,7 +24,6 @@ class Book(models.Model):
     title=models.CharField(max_length=255)
     author = models.ManyToManyField(Authors,related_name='books')
     category = models.ManyToManyField(Category,related_name='categories')
-    # price=models.FloatField(max_length=10,null=True,blank=True)
     price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
