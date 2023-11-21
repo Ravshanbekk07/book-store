@@ -38,14 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+    
     #installed
     
     'drf_yasg',
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',
-   
+    'django.contrib.sites',
     'dj_rest_auth.registration',
     'allauth',
     'allauth.account',
@@ -60,6 +60,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
 
 MIDDLEWARE = [
+    'django.contrib.sites.middleware.CurrentSiteMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
