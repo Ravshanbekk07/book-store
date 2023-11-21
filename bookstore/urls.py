@@ -4,7 +4,12 @@ from .views import (BookList,BookDetail,CategoryList,CategoryDetail,
                    AuthorList,AuthorDetail,
                    LastBooks,LikeList,LikeDetail,mainAuth,CategoryBookDetail)
                    
+from rest_framework.routers import SimpleRouter
 
+from deletedcodes import BookViewSet
+
+router=SimpleRouter()
+router.register('allbook',BookViewSet,basename='books')
 
 urlpatterns=[
     path('all/',BookList.as_view()),
@@ -20,7 +25,7 @@ urlpatterns=[
 
     
     path('authors/all/',AuthorList.as_view()),
-    path('author/<int:pk>/',AuthorDetail.as_view()),
+    path('author/<int:pk>/',AuthorDetail.as_view()), 
 
    
     path('lastbooks/',LastBooks.as_view()),
@@ -33,3 +38,5 @@ urlpatterns=[
    
 
 ]
+
+urlpatterns=urlpatterns+router.urls

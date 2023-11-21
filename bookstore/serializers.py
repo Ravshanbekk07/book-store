@@ -55,21 +55,21 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model=Order
         fields="__all__"
-    def validate(self, data):
+    # def validate(self, data):
         
-        book = data.get("book",None)
-        customer_id = data.get("customer_id",None)
+    #     book = data.get("book",None)
+    #     customer_id = data.get("customer_id",None)
         
-        if Order.objects.filter(book=book,customer_id=customer_id).exists():
-            raise ValidationError(
-                {
-                    'status':False,
-                    'message':'bu avval zakas qilingan'
-                }
-            )
+    #     if Order.objects.filter(book=book,customer_id=customer_id).exists():
+    #         raise ValidationError(
+    #             {
+    #                 'status':False,
+    #                 'message':'bu avval zakas qilingan'
+    #             }
+    #         )
 
         
-        return data
+    #     return data
     
 
 

@@ -58,3 +58,24 @@
 
 # path('customer/all/',CustomerList.as_view()),
 #     path('customer/<int:pk>/',CustomerDetail.as_view()),
+
+
+from bookstore.serializers import BookSerializer
+from bookstore.views import Book
+from rest_framework import viewsets
+from rest_framework import permissions
+
+
+
+
+
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [permissions.IsAdminUser()]
+        return [permissions.IsAuthenticated()]  
+

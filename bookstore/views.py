@@ -24,8 +24,9 @@ class LastBooks(APIView):
    
 class BookList(APIView):
    
+  
     def get(self,request):
-        book=Book.objects.all()
+        book=Book.objects.exclude(e_version__exact='')
         serializer=BookSerializer(book,many=True)
         return Response(serializer.data)
     def post(self,request):
