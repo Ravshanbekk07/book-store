@@ -52,11 +52,28 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'whitenoise',
     'whitenoise.runserver_nostatic',
-
+    'social_django',
     #locals
     'bookstore.apps.BookstoreConfig',
   
 ]
+
+
+# AUTHENTICATION_BACKENDS = (
+#     'social_core.backends.google.GoogleOAuth2',
+#     'social_core.backends.facebook.FacebookOAuth2',
+#     'django.contrib.auth.backends.ModelBackend',
+# )
+
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'your-google-client-id'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'your-google-client-secret'
+
+# SOCIAL_AUTH_FACEBOOK_KEY = 'your-facebook-app-id'
+# SOCIAL_AUTH_FACEBOOK_SECRET = 'your-facebook-app-secret'
+# SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
 
