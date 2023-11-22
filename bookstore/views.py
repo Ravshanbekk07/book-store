@@ -13,12 +13,6 @@ from .serializers import (BookSerializer,CategorySerializer,
                           OrderSerializer,AuthorSerializer,LIkeSerializer)
                           
 
-
-
-
-
-
-
 class LastBooks(APIView):
     def get(self,request):
        all_books = Book.objects.all()
