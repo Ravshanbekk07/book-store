@@ -15,6 +15,10 @@ from .serializers import (BookSerializer,CategorySerializer,
 
 
 
+
+
+
+
 class LastBooks(APIView):
     def get(self,request):
        all_books = Book.objects.all()

@@ -4,12 +4,19 @@ from .views import (BookList,BookDetail,CategoryList,CategoryDetail,
                    AuthorList,AuthorDetail,
                    LastBooks,LikeList,LikeDetail,mainAuth,CategoryBookDetail)
                    
-from rest_framework.routers import SimpleRouter
+# from rest_framework.routers import SimpleRouter
+# from deletedcodes import BookViewSet
 
-from deletedcodes import BookViewSet
 
-router=SimpleRouter()
-router.register('allbook',BookViewSet,basename='books')
+
+
+
+
+
+
+
+# router=SimpleRouter()
+# router.register('allbook',BookViewSet,basename='books')
 
 urlpatterns=[
     path('all/',BookList.as_view()),
@@ -34,9 +41,12 @@ urlpatterns=[
     path('favorites/<int:pk>/',LikeDetail.as_view()),
 
     path('mainauth/<int:pk>/',mainAuth.as_view()),
-    path('categorybook/<int:pk>/',CategoryBookDetail.as_view())
+    path('categorybook/<int:pk>/',CategoryBookDetail.as_view()),
+
+   
+
    
 
 ]
 
-urlpatterns=urlpatterns+router.urls
+# urlpatterns=urlpatterns+router.urls

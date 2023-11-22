@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    
     'whitenoise',
     'whitenoise.runserver_nostatic',
     'social_django',
@@ -59,18 +61,37 @@ INSTALLED_APPS = [
 ]
 
 
-# AUTHENTICATION_BACKENDS = (
-#     'social_core.backends.google.GoogleOAuth2',
-#     'social_core.backends.facebook.FacebookOAuth2',
-#     'django.contrib.auth.backends.ModelBackend',
-# )
 
-# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'your-google-client-id'
-# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'your-google-client-secret'
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
-# SOCIAL_AUTH_FACEBOOK_KEY = 'your-facebook-app-id'
-# SOCIAL_AUTH_FACEBOOK_SECRET = 'your-facebook-app-secret'
-# SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+LOGIN_REDIRECT_URL = '/'
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '<11592023356-c85h6kvt4aula5atkg4utearm8h0h2r0.apps.googleusercontent.com>',
+            'secret': '<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>',
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+
 
 
 
@@ -143,10 +164,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK={
     'DEFAULT_AUTHENTICATION_CLASSES':[
+       
+        
         'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-     
+    
         
     ],
     'DEFAULT_PERMISSION_CLASSES':[
