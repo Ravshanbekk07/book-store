@@ -51,7 +51,7 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
     path('login/',views.login,name='login'),
-    path('',views.home,name='home'),
+    
     path('social-auth/',include('social_django.urls',namespace='social'))
        
    
