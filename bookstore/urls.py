@@ -12,6 +12,9 @@ from .views import (BookList,BookDetail,CategoryList,CategoryDetail,
 # router.register('allbook',BookViewSet,basename='books')
 
 urlpatterns=[
+  
+    
+    
     path('all/',BookList.as_view()),
     path('<int:pk>/',BookDetail.as_view()),
 

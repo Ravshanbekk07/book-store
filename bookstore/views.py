@@ -8,11 +8,19 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.authentication import BasicAuthentication,TokenAuthentication
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404,render
 from .serializers import (BookSerializer,CategorySerializer,
                           OrderSerializer,AuthorSerializer,LIkeSerializer)
-                          
 
+from django.contrib.auth.decorators import login_required
+def login(request):
+    return render(request,'login.html')
+@login_required
+def home(request):
+    return render(request,'home.html')
+
+
+   
 class LastBooks(APIView):
     def get(self,request):
        all_books = Book.objects.all()
