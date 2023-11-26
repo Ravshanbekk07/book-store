@@ -106,7 +106,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'https://ravshanbek07.pythonanywhere.com/book/all'
+LOGIN_REDIRECT_URL = 'https://bookstore.pythonanywhere.com/book/all'
 LOGOUT_REDIRECT_URL = 'home'
 
 
