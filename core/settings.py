@@ -66,16 +66,6 @@ INSTALLED_APPS = [
     
 ]
 
-
-
-
-
-
-
-
-
-
-
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
 
@@ -110,6 +100,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/book/google-signup/'
+LOGIN_REDIRECT_URL = 'https://iambookish.pythonanywhere.com/book/google-signup/'
 LOGOUT_REDIRECT_URL = 'home'
 
 
