@@ -10,15 +10,47 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.authentication import BasicAuthentication,TokenAuthentication
 from django.shortcuts import get_object_or_404,render
 from .serializers import (BookSerializer,CategorySerializer,
-                          OrderSerializer,AuthorSerializer,LIkeSerializer)
-
+                          OrderSerializer,AuthorSerializer,LIkeSerializer,
+                          GoogleSignUpSerializer,UserTokenSerializer)
 from django.contrib.auth.decorators import login_required
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import get_user_model
+
 def login(request):
     return render(request,'login.html')
 @login_required
 def home(request):
     return render(request,'home.html')
 
+class GoogleSignUpView(APIView):
+     
+    def post(self, request):
+        serializer = GoogleSignUpSerializer(data=request.data)
+        if serializer.is_valid():
+
+            user = serializer.save()
+            return Response({'message': 'User created successfully', 'password': user.password}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CustomUserTokenView(APIView):
+    def post(self, request):
+        serializer = UserTokenSerializer(data=request.data)
+        if serializer.is_valid():
+            username = serializer.validated_data['username']
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            refresh = RefreshToken.for_user(user)
+
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
 
    
 class LastBooks(APIView):
@@ -147,6 +179,7 @@ class OrderList(APIView):
      
     def get(self,request):
         user=request.user
+        
         if not user:
             return Response({'error':'unauthorized'},status =401)
             
@@ -161,7 +194,9 @@ class OrderList(APIView):
             return Response(serializer.data)
     def post(self,request):
         data =request.data
+        
         user=request.user
+        # print(user.email[:-10])
         serializer = OrderSerializer(data=data)
         if not user:
             return Response({'error':'Unauthorized'},status =401)
@@ -269,6 +304,7 @@ class CategoryBookDetail(APIView):
 class LikeList(generics.ListCreateAPIView):
   
     authentication_classes=[BasicAuthentication]
+    # authentication_classes=[TokenAuthentication]
     serializer_class = LIkeSerializer
     permission_classes = [IsAuthenticated]
 

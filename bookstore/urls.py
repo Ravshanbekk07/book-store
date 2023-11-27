@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (BookList,BookDetail,CategoryList,CategoryDetail,
                     OrderList,OrderDetail,
                    AuthorList,AuthorDetail,
-                   LastBooks,LikeList,LikeDetail,mainAuth,CategoryBookDetail)
+                   LastBooks,LikeList,LikeDetail,mainAuth,CategoryBookDetail,GoogleSignUpView,CustomUserTokenView)
                    
 # from rest_framework.routers import SimpleRouter
 # from deletedcodes import BookViewSet
@@ -13,8 +13,8 @@ from .views import (BookList,BookDetail,CategoryList,CategoryDetail,
 
 urlpatterns=[
   
-    
-    
+    path('google-signup/', GoogleSignUpView.as_view(), name='google_sign_up'),
+    path('token/',CustomUserTokenView.as_view(),name='customer_user'),
     path('all/',BookList.as_view()),
     path('<int:pk>/',BookDetail.as_view()),
 

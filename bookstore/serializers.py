@@ -4,10 +4,34 @@ from .models import (
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.contrib.auth.hashers import make_password
+import secrets
+from django.contrib.auth import get_user_model
+
+class GoogleSignUpSerializer(serializers.Serializer):
+   
+
+    def create(self, validated_data):
+        password = secrets.token_urlsafe(8)
+      
+        hashed_password = make_password(password)
+      
+        user, created = User.objects.get_or_create(username=validated_data['email'[:-10]],
+                                                    email=validated_data['email'], 
+                                                    password=hashed_password)
+       
+        user.password = password
+        return user
+    
 
 
-
-
+# class TokenSerializer(serializers.Serializer):
+#    def create(self, validated_data):
+#         user, created = User.objects.get(username=validated_data['email'[:-10]],)
+#         return user
+   
+class UserTokenSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=150)
 
 
 class BookSerializer(serializers.ModelSerializer):

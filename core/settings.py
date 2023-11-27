@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+   
     
     
     'whitenoise',
@@ -62,7 +63,7 @@ INSTALLED_APPS = [
     'social_django',
     #locals
     'bookstore.apps.BookstoreConfig',
-  
+    
 ]
 
 
@@ -108,7 +109,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'https://bookstore.pythonanywhere.com/book/all'
+LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/book/google-signup/'
 LOGOUT_REDIRECT_URL = 'home'
 
 
@@ -165,9 +166,9 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK={
     'DEFAULT_AUTHENTICATION_CLASSES':[
        
-        
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     
         
