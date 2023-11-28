@@ -48,9 +48,6 @@ class OrderAdmin(admin.ModelAdmin):
     def mark_as_new(self,request,queryset):
         queryset.update(status="New")
 
-
-
-
 @admin.register(Authors)
 class AuthorsAdmin(admin.ModelAdmin):
     list_display=['name']

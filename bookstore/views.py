@@ -15,6 +15,8 @@ from .serializers import (BookSerializer,CategorySerializer,
 from django.contrib.auth.decorators import login_required
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 def login(request):
     return render(request,'login.html')
@@ -50,9 +52,6 @@ class CustomUserTokenView(APIView):
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        
-
-   
 class LastBooks(APIView):
     def get(self,request):
        all_books = Book.objects.all()
@@ -112,9 +111,7 @@ class BookDetail(APIView):
             return Response({"status":'deleted'})
         
 class CategoryList(APIView):
-    # authentication_classes=[TokenAuthentication]
-    # permission_classes=[IsAuthenticated]
-
+   
     def get(self,request):
         category=Category.objects.all()
         serializer=CategorySerializer(category,many=True)
@@ -133,8 +130,7 @@ class CategoryList(APIView):
             return Response(serializer.errors)
 
 class CategoryDetail(APIView):
-    # authentication_classes=[BasicAuthentication]
-    # permission_classes=[IsAuthenticated]
+    
 
     def get(self,request,pk:int):
         user=request.user
@@ -168,13 +164,9 @@ class CategoryDetail(APIView):
         else:
             category.delete()
             return Response({"status":'deleted'})  
-
-
-    
+   
 class OrderList(APIView):
-
-    # authentication_classes=[BasicAuthentication]
-    authentication_classes=[TokenAuthentication]
+    authentication_classes=[JWTAuthentication]
     permission_classes=[IsAuthenticated]
      
     def get(self,request):
@@ -206,18 +198,26 @@ class OrderList(APIView):
         else:
             return Response(serializer.errors)
 class OrderDetail(APIView):
-    authentication_classes=[BasicAuthentication]
+    authentication_classes=[JWTAuthentication]
     permission_classes=[IsAuthenticated]
 
     def get(self,request,pk:int):
+       
         user=request.user
-        if not user.is_superuser:
-                return Response({'error':'unauthorized'},status =401)
+        if not user:
+            return Response({'error':'unauthorized'},status =401)
+            
+        elif user.is_superuser:
+            
+            order=Order.objects.all()
+            serializer=OrderSerializer(order,many=True)
+            return Response(serializer.data)
         else:
-                order=get_object_or_404(Order,id=pk)
-                serializer=OrderSerializer(order)
-                return Response(serializer.data)
-        
+            order=get_object_or_404(Order,customer_id=user,id=pk)
+            
+            serializer=OrderSerializer(order)
+            
+            return Response(serializer.data)
    
     def delete(self,request,pk:int):
         user=request.user
@@ -302,9 +302,9 @@ class CategoryBookDetail(APIView):
                   
 
 class LikeList(generics.ListCreateAPIView):
-  
-    authentication_classes=[BasicAuthentication]
-    # authentication_classes=[TokenAuthentication]
+    
+   
+    authentication_classes=[JWTAuthentication]
     serializer_class = LIkeSerializer
     permission_classes = [IsAuthenticated]
 
@@ -318,10 +318,11 @@ class LikeDetail(generics.DestroyAPIView):
     queryset = Likes.objects.all()
     serializer_class = LIkeSerializer
     permission_classes = [IsAuthenticated]
-    authentication_classes=[BasicAuthentication]
+    authentication_classes=[JWTAuthentication]
 
     def get_queryset(self):
         return Likes.objects.filter(user=self.request.user)
+    
      
 
 

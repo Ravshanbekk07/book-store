@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
 import secrets
-
+from django.shortcuts import get_object_or_404
 class GoogleSignUpSerializer(serializers.Serializer):
     def create(self, validated_data):
         password = secrets.token_urlsafe(8)
@@ -67,24 +67,11 @@ class CategorySerializer(serializers.ModelSerializer):
         return data
 
 class OrderSerializer(serializers.ModelSerializer):
+    book_details = BookSerializer(source='book', read_only=True)
     class Meta:
         model=Order
         fields="__all__"
-    # def validate(self, data):
-        
-    #     book = data.get("book",None)
-    #     customer_id = data.get("customer_id",None)
-        
-    #     if Order.objects.filter(book=book,customer_id=customer_id).exists():
-    #         raise ValidationError(
-    #             {
-    #                 'status':False,
-    #                 'message':'bu avval zakas qilingan'
-    #             }
-    #         )
-
-        
-    #     return data
+    
     
 
 

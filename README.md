@@ -70,3 +70,29 @@
 
 
         To interact with the API, use the provided authentication mechanism. Examples and guidelines can be found in the detailed API documentation.
+
+
+
+       https://iambookish.pythonanywhere.com/book/ --- following apis begin with this api
+
+    token/ --- this api is for refreshing token of target user
+
+    all/   --- this api is for taking,posting all free books
+    <int:pk>/ --- this api is for getting,updating and deleting a specific free book
+    
+    category/all/ --- this api is for taking and posting all category
+    category/<int:pk>/---this api is  for getting,updating and deleting a specific category
+
+    order/all/ --- this api is for taking and posting order
+    order/<int:pk>/ --- this api is for taking,deleting a specific order
+
+    authors/all/--- this api is for taking and posting authors
+    author/<int:pk>/ ---this api is  for getting, updating and deleting a specific author
+
+    lastbooks/--- this api is for taking books in homepage
+   
+    favorites/ ---this api is for taking and post favorite books
+    favorites/<int:pk>/---this api is for deleting from favorites
+
+    mainauth/<int:pk>/--- this api is for a specific author and a specific author's books
+    categorybook/<int:pk>/---this api is for taking books in a specific category
