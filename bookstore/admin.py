@@ -33,7 +33,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display=['id','status','book','status']
+    list_display=['id','status','book','status','customer_id']
     search_fields=['status','order_date']
     list_filter=['status','order_date']
     date_hierarchy='order_date'
