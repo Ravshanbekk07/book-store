@@ -185,18 +185,18 @@ class OrderList(APIView):
             serializer=OrderSerializer(order,many=True)
             return Response(serializer.data)
     def post(self,request):
-        data =request.data
-        
-        user=request.user
-        # print(user.email[:-10])
+        data = request.data
+        user = request.user
         serializer = OrderSerializer(data=data)
         if not user:
             return Response({'error':'Unauthorized'},status =401)
         elif serializer.is_valid():
-            serializer.save()
+            serializer.save(customer_id=request.user)
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+        
+
 class OrderDetail(APIView):
     authentication_classes=[JWTAuthentication]
     permission_classes=[IsAuthenticated]
@@ -209,8 +209,8 @@ class OrderDetail(APIView):
             
         elif user.is_superuser:
             
-            order=Order.objects.all()
-            serializer=OrderSerializer(order,many=True)
+            order=get_object_or_404(Order,id=pk)
+            serializer=OrderSerializer(order)
             return Response(serializer.data)
         else:
             order=get_object_or_404(Order,customer_id=user,id=pk)
@@ -221,12 +221,13 @@ class OrderDetail(APIView):
    
     def delete(self,request,pk:int):
         user=request.user
-        order = get_object_or_404(Order,id=pk)
+        order=get_object_or_404(Order,id=pk)
         if not user:
             return Response({'error':'Unauthorized'},status =401)
         elif not user.is_superuser:
             return Response({'error':'forbidden'},status =401)
         else:
+            
             order.delete()
             return Response({"status":'deleted'})  
 

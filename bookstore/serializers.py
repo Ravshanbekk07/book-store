@@ -70,9 +70,19 @@ class OrderSerializer(serializers.ModelSerializer):
     book_details = BookSerializer(source='book', read_only=True)
     class Meta:
         model=Order
-        fields="__all__"
+        fields=['id', 'order_date', 'status', 'book', 'customer_id','book_details']
+        
+        extra_kwargs = {
+        'id': {'read_only': True},
+        'book_details': {'read_only': True},
+        'customer_id': {'read_only': True},
+        'order_date': {'read_only': True},
+        'status': {'read_only': True},
+        
+        }
+
     
-    
+
 
 
 class AuthorSerializer(serializers.ModelSerializer):
