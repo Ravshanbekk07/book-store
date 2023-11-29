@@ -37,8 +37,8 @@ class Book(models.Model):
 
     )
     description=models.CharField(max_length=400,blank=True,null=True)
-    picture =models.ImageField(upload_to='uploads/',null=True,blank=True)
-    e_version=models.FileField(upload_to='documents/', max_length=150,blank=True,null=True)
+    picture =models.ImageField(upload_to='medias/pictures/',null=True,blank=True)
+    e_version=models.FileField(upload_to='medias/documents/', max_length=150,blank=True,null=True)
    
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateField(auto_now=True)
