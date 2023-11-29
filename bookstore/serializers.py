@@ -110,16 +110,25 @@ class AuthorSerializer(serializers.ModelSerializer):
         
         return data
 class LIkeSerializer(serializers.ModelSerializer):
+    book_details=BookSerializer(source='book_id', read_only=True)
     class Meta:
         model=Likes
-        fields="__all__"
+        fields=["id","time","book_id","user",'book_details']
+        extra_kwargs = {
+        'id': {'read_only': True},
+        'time': {'read_only': True},
+        'user': {'read_only': True},
+        'book_details' : {'read_only': True},
+        
+        }
+
 
 
     def validate(self, data):
         
         book_id = data.get("book_id",None)
-        user=data.get('user',None)
-        if Likes.objects.filter(book_id=book_id,user=user).exists():
+        
+        if Likes.objects.filter(book_id=book_id).exists():
              raise ValidationError(
                 {
                     'status':False,

@@ -303,23 +303,24 @@ class CategoryBookDetail(APIView):
                   
 
 class LikeList(generics.ListCreateAPIView):
-    
-   
     authentication_classes=[JWTAuthentication]
     serializer_class = LIkeSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Likes.objects.filter(user=self.request.user)
-
+    
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-class LikeDetail(generics.DestroyAPIView):
+class LikeDetail(generics.RetrieveDestroyAPIView):
     queryset = Likes.objects.all()
     serializer_class = LIkeSerializer
     permission_classes = [IsAuthenticated]
     authentication_classes=[JWTAuthentication]
+
+    def get_queryset(self):
+        return Likes.objects.filter(user=self.request.user)
 
     def get_queryset(self):
         return Likes.objects.filter(user=self.request.user)
