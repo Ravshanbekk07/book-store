@@ -20,7 +20,10 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from bookstore import views
-from django.contrib.auth import views as auth_views
+
+from django.conf import settings
+from django.conf.urls.static import static
+
 schema_view = get_schema_view (
     openapi.Info(
             title='bookstore  api',
@@ -33,10 +36,6 @@ schema_view = get_schema_view (
     public=True,
     permission_classes=[permissions.AllowAny],
 )
-
-
-          
-            
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -55,4 +54,4 @@ urlpatterns = [
     path('social-auth/',include('social_django.urls',namespace='social'))
        
    
-]
+] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
