@@ -48,3 +48,4 @@ virtualenv-clone==0.5.7
 Werkzeug==2.3.6
 whitenoise==6.6.0
 wrapt==1.16.0
+django-cleanup==8.0.0
