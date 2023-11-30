@@ -20,9 +20,10 @@ class Category(models.Model):
 
     def __str__(self) -> str:
         return self.name
-    
+
+
 class Book(models.Model):
-    title=models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     author = models.ManyToManyField(Authors,related_name='books')
     category = models.ManyToManyField(Category,related_name='categories')
     price = models.DecimalField(
@@ -31,15 +32,10 @@ class Book(models.Model):
         validators=[
             MinValueValidator(10000.00, message="Price must be greater than or equal to 10000.00."),
             MaxValueValidator(999999.99, message="Price must be less than or equal to 999999.99."),
-        ],
-        null=True,
-        blank=True
-
-    )
+        ],null=True,blank=True)
     description=models.CharField(max_length=400,blank=True,null=True)
     picture =models.ImageField(upload_to='pictures/',null=True,blank=True)
     e_version=models.FileField(upload_to='documents/', max_length=150,blank=True,null=True)
-   
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateField(auto_now=True)
     active = models.BooleanField(default=True)
@@ -47,8 +43,6 @@ class Book(models.Model):
 
     def __str__(self) -> str:
         return self.title 
-
- 
 
     
 class Order(models.Model):

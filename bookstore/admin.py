@@ -10,11 +10,13 @@ from .models import Book,Category,Order,Authors,Likes
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display=['title','price','active']
+    list_display=['title','price','active',]
     list_filter=['active','created_at','updated_at']
     date_hierarchy='created_at'
-    search_fields=['title','author']
+    search_fields=['title']
     actions=('mark_as_inactive','mark_as_active')
+   
+
 
     @admin.action(description='update inactive')
     def mark_as_inactive(self,request,queryset):

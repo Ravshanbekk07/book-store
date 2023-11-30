@@ -17,7 +17,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .pagination import pagination
-from .forms import BookSearchForm
+
 def login(request):
     return render(request,'login.html')
 @login_required
@@ -62,11 +62,8 @@ class LastBooks(APIView):
     
 class SearchBook(APIView):
     def get(self,request):
-        form = BookSearchForm(request.GET)
-        results = []
-        if form.is_valid():
-            title = form.cleaned_data['title']
-            results = Book.objects.filter(title__icontains=title)
+        title=request.GET.get("title",'')
+        results = Book.objects.filter(title__icontains=title)
         serializer=BookSerializer(results,many=True)
         return Response(serializer.data) 
 
