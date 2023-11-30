@@ -16,8 +16,8 @@ from django.contrib.auth.decorators import login_required
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
-
+from .pagination import pagination
+from forms import BookSearchForm
 def login(request):
     return render(request,'login.html')
 @login_required
@@ -54,11 +54,19 @@ class CustomUserTokenView(APIView):
 
 class LastBooks(APIView):
     def get(self,request):
-       all_books = Book.objects.all()
-       last_books = all_books[::-1][:12]  
-       serializer = BookSerializer(last_books, many=True)
-       return Response(serializer.data)
-   
+        return Response(pagination(
+            page = request.GET.get('page', 1),
+            limit = request.GET.get('limit', 10) ,
+            form=Book.objects.all()[::-1][:20] ,
+            serializer=BookSerializer),status=200)
+class SearchBook(APIView):
+    def get(request):
+        form = BookSearchForm(request.GET)
+        results = []
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            results = Book.objects.filter(title__icontains=title)
+        return Response(results)   
 class BookList(APIView):
    
   

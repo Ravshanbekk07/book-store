@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (BookList,BookDetail,CategoryList,CategoryDetail,
                     OrderList,OrderDetail,
                    AuthorList,AuthorDetail,
-                   LastBooks,LikeList,LikeDetail,mainAuth,CategoryBookDetail,GoogleSignUpView,CustomUserTokenView)
+                   LastBooks,LikeList,LikeDetail,mainAuth,CategoryBookDetail,
+                   GoogleSignUpView,CustomUserTokenView,SearchBook)
                    
 # from rest_framework.routers import SimpleRouter
 # from deletedcodes import BookViewSet
@@ -34,6 +35,8 @@ urlpatterns=[
 
     path('mainauth/<int:pk>/',mainAuth.as_view()),
     path('categorybook/<int:pk>/',CategoryBookDetail.as_view()),
+
+    path('search/',SearchBook.as_view()),
 
    
 ]
