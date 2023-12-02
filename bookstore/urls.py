@@ -5,12 +5,12 @@ from .views import (BookList,BookDetail,CategoryList,CategoryDetail,
                    LastBooks,LikeList,LikeDetail,mainAuth,CategoryBookDetail,
                    GoogleSignUpView,CustomUserTokenView,SearchBook)
                    
-# from rest_framework.routers import SimpleRouter
-# from deletedcodes import BookViewSet
+from rest_framework.routers import SimpleRouter
+from deletedcodes import BookViewSet
 
 
-# router=SimpleRouter()
-# router.register('allbook',BookViewSet,basename='books')
+router=SimpleRouter()
+router.register('allbook',BookViewSet,basename='books')
 
 urlpatterns=[
   

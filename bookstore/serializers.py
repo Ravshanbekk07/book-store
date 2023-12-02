@@ -125,16 +125,14 @@ class LIkeSerializer(serializers.ModelSerializer):
 
 
     def validate(self, data):
-        
-        book_id = data.get("book_id",None)
-        
-        if Likes.objects.filter(book_id=book_id).exists():
+        user = self.context['request'].user
+        book = data['book_id']
+        if Likes.objects.filter(user=user,book_id=book).exists():
              raise ValidationError(
                 {
                     'status':False,
                     'message':'bu kitob sevimlilarga avvaldan qo\'shilgan'
                 }
             )
-
-        
+   
         return data

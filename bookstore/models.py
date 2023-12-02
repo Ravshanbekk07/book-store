@@ -47,16 +47,16 @@ class Order(models.Model):
    
     STATUS = (
         
-        ('Done','Done'), 
-        ('New', 'New'),
-        ('In Progress','In Progress'),
+        ('done','done'), 
+        ('new', 'new'),
+        ('in_progress','in_progress'),
         ('cancelled','cancelled')
        
     )
     order_date=models.DateField(auto_now=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     customer_id=models.ForeignKey(User,on_delete=models.CASCADE)
-    status = models.CharField(max_length = 100, choices = STATUS, default="New")
+    status = models.CharField(max_length = 100, choices = STATUS, default="new")
 
     def __str__(self) -> str:
         return self.status
