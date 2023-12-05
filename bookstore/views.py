@@ -56,8 +56,8 @@ class LastBooks(APIView):
     def get(self,request):
         return Response(pagination(
             page = request.GET.get('page', 1),
-            limit = request.GET.get('limit', 5) ,
-            form=Book.objects.all()[::-1][:20] ,
+            limit = request.GET.get('limit', 5),
+            form=Book.objects.all()[::-1][:20],
             serializer=BookSerializer),status=200)
     
 class SearchBook(APIView):
@@ -114,39 +114,17 @@ class CategoryList(APIView):
         category=Category.objects.all()
         serializer=CategorySerializer(category,many=True)
         return Response(serializer.data)
-    def post(self,request):
-        serializer=CategorySerializer(data=request.data)
-        if not request.user.is_superuser:
-            return Response({'error':'Forbidden'},status=403)
-        elif serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
+    # def post(self,request):
+    #     serializer=CategorySerializer(data=request.data)
+    #     if not request.user.is_superuser:
+    #         return Response({'error':'Forbidden'},status=403)
+    #     elif serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response(serializer.errors)
 
-class CategoryDetail(APIView):
+
     
-
-    # def get(self,request,pk:int):
-    #     category=get_object_or_404(Category,id=pk)
-    #     serializer=CategorySerializer(category)
-    #     return Response(serializer.data)
-        
-    def put(self,request,pk:int):
-        category=get_object_or_404(Category,id=pk)    
-        serializer=CategorySerializer(instance=category,data=request.data)
-        if not request.user.is_superuser:
-            return Response({'error':'Forbidden'},status=403)
-        elif serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
-    def delete(self,request,pk:int):
-        category = get_object_or_404(Category,id=pk)
-        if not request.user.is_superuser:
-            return Response({'error':'Forbidden'},status=403)
-        category.delete()
-        return Response({"status":'Deleted'})  
-   
 class OrderList(APIView):
     authentication_classes=[JWTAuthentication]
     permission_classes=[IsAuthenticated]
@@ -203,39 +181,39 @@ class AuthorList(APIView):
         author=Authors.objects.all()
         serializer=AuthorSerializer(author,many=True)
         return Response(serializer.data)
-    def post(self,request):
-        serializer = AuthorSerializer(data=request.data)
-        if not request.user.is_superuser:
-            return Response({'error':'Forbidden'},status=403)
-        elif serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
+    # def post(self,request):
+    #     serializer = AuthorSerializer(data=request.data)
+    #     if not request.user.is_superuser:
+    #         return Response({'error':'Forbidden'},status=403)
+    #     elif serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response(serializer.errors)
         
-class AuthorDetail(APIView):
+# class AuthorDetail(APIView):
     
     # def get(self,request,pk:int):
     #     author=get_object_or_404(Authors,id=pk)
     #     serializer=AuthorSerializer(author)
     #     return Response(serializer.data)
         
-    def put(self,request,pk:int):
-        author=get_object_or_404(Authors,id=pk)    
-        serializer=AuthorSerializer(instance=author,data=request.data,partial=True)
-        #partial=true faqatgina bazilarini update qilish uchun ishlatiladi agar modelda null=true yoki blank=true bolmasa
-        if not request.user.is_superuser:
-            return Response({'error':'Forbidden'},status=403)
-        elif serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
-    def delete(self,request,pk:int):
-        author = get_object_or_404(Authors,id=pk)
-        if not request.user.is_superuser:
-            return Response({'error':'Forbidden'},status=403)
-        else:
-            author.delete()
-            return Response({"status":'Deleted'})
+    # def put(self,request,pk:int):
+    #     author=get_object_or_404(Authors,id=pk)    
+    #     serializer=AuthorSerializer(instance=author,data=request.data,partial=True)
+    #     #partial=true faqatgina bazilarini update qilish uchun ishlatiladi agar modelda null=true yoki blank=true bolmasa
+    #     if not request.user.is_superuser:
+    #         return Response({'error':'Forbidden'},status=403)
+    #     elif serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     return Response(serializer.errors)
+    # def delete(self,request,pk:int):
+    #     author = get_object_or_404(Authors,id=pk)
+    #     if not request.user.is_superuser:
+    #         return Response({'error':'Forbidden'},status=403)
+    #     else:
+    #         author.delete()
+    #         return Response({"status":'Deleted'})
 
 
 class mainAuth(APIView):

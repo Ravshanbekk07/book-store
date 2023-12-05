@@ -20,26 +20,30 @@ class GoogleSignUpSerializer(serializers.Serializer):
 class UserTokenSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150)
 
-
-class BookSerializer(serializers.ModelSerializer):
+class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Book
-        fields="__all__"
+        model=Authors
+        fields=['id','name','description']
     def validate(self, data):
         
-        title = data.get("title",None)
-        
-        if Book.objects.filter(title=title).exists():
+        name = data.get("name",None)
+        if  name.isnumeric():
             raise ValidationError(
                 {
                     'status':False,
-                    'message':'bu kitob bazamizda mavjud'
+                    'message':'Ijodkor nomi harflardan tashkil topishi kerak'
+                }
+            )
+        if Authors.objects.filter(name=name).exists():
+             raise ValidationError(
+                {
+                    'status':False,
+                    'message':'bu ijodkor bazamizda mavjud'
                 }
             )
 
         
         return data
-
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -59,15 +63,83 @@ class CategorySerializer(serializers.ModelSerializer):
             raise ValidationError(
                 {
                     'status':False,
-                    'message':'bu kategoriya bazamizda mavjud'
+                    'message':'Bu kategoriya bazamizda mavjud'
                 }
             )
 
         
         return data
 
+class BookSerializer(serializers.ModelSerializer):
+    # author = AuthorSerializer(many=True)
+    class Meta:
+        model=Book
+        fields=['id','title','price','description','picture','e_version','created_at','updated_at',
+                'active','author','category']
+        
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        if instance.author.exists():
+            representation['author'] = AuthorSerializer(instance.author.all(), many=True).data
+        representation['authors'] = []
+
+        if instance.category.exists():
+            representation['category']=CategorySerializer(instance.category.all(), many=True).data
+        
+        return representation
+    
+
+    
+   
+    def validate(self, data):
+        
+        title = data.get("title",None)
+        
+        if Book.objects.filter(title=title).exists():
+            raise ValidationError(
+                {
+                    'status':False,
+                    'message':'bu kitob bazamizda mavjud'
+                }
+            )
+
+        
+        return data
+
+
+# class CategorySerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model=Category
+#         fields="__all__"
+#     def validate(self, data):
+        
+#         name = data.get("name",None)
+#         if  name.isnumeric():
+#             raise ValidationError(
+#                 {
+#                     'status':False,
+#                     'message':'Kategoriya harflardan tashkil topishi kerak'
+#                 }
+#             )
+#         if Category.objects.filter(name=name).exists():
+#             raise ValidationError(
+#                 {
+#                     'status':False,
+#                     'message':'Bu kategoriya bazamizda mavjud'
+#                 }
+#             )
+
+        
+#         return data
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields=['id', 'username','email']
+
 class OrderSerializer(serializers.ModelSerializer):
     book_details = BookSerializer(source='book', read_only=True)
+    customer_id = UserSerializer(read_only=True)
     class Meta:
         model=Order
         fields=['id', 'order_date', 'status', 'book', 'customer_id','book_details']
@@ -80,9 +152,8 @@ class OrderSerializer(serializers.ModelSerializer):
         'status': {'read_only': True},
         
         }
-
     
-
+    
 
 
 class AuthorSerializer(serializers.ModelSerializer):

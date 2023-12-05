@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import (BookList,BookDetail,CategoryList,CategoryDetail,
+from .views import (BookList,BookDetail,CategoryList,
                     OrderList,OrderDetail,
-                   AuthorList,AuthorDetail,
+                   AuthorList,
                    LastBooks,LikeList,LikeDetail,mainAuth,CategoryBookDetail,
                    GoogleSignUpView,CustomUserTokenView,SearchBook)
                    
@@ -20,13 +20,13 @@ urlpatterns=[
     path('<int:pk>/',BookDetail.as_view()),
 
     path('category/all/',CategoryList.as_view()),
-    path('category/<int:pk>/',CategoryDetail.as_view()),
+   
 
     path('order/all/',OrderList.as_view()),
     path('order/<int:pk>/',OrderDetail.as_view()),
 
     path('authors/all/',AuthorList.as_view()),
-    path('author/<int:pk>/',AuthorDetail.as_view()), 
+   
 
     path('lastbooks/',LastBooks.as_view()),
    
