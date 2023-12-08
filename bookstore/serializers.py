@@ -82,7 +82,7 @@ class BookSerializer(serializers.ModelSerializer):
 
         if instance.author.exists():
             representation['author'] = AuthorSerializer(instance.author.all(), many=True).data
-        representation['authors'] = []
+        
 
         if instance.category.exists():
             representation['category']=CategorySerializer(instance.category.all(), many=True).data
